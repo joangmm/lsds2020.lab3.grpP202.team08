@@ -35,14 +35,13 @@ public class TwitterStateless {
         // transform it to the expected RDD like in Lab 4
         final JavaPairRDD<String, String> languageMap = LanguageMapUtils
                 .buildLanguageMap(languageMapLines);
-        
-        
+                
         // count Tweets per Language
         final JavaPairDStream<String, Integer> languageRankStream = stream
             .mapToPair(s -> new Tuple2<>(s.getLang(), 1))
-            .reduceByKey((a, b) -> a + b)
             .transformToPair(rdd -> rdd.join(languageMap))
-            .mapToPair(s -> new Tuple2<>((s._2)._2, (s._2)._1));
+            .mapToPair(s -> new Tuple2<>((s._2)._2, (s._2)._1))
+            .reduceByKey((a, b) -> a + b);
         
         // print first 10 results
         languageRankStream.print();

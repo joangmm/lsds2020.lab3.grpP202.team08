@@ -12,10 +12,12 @@ import twitter4j.Status;
 import twitter4j.auth.OAuthAuthorization;
 import upf.edu.util.ConfigUtils;
 import upf.edu.util.LanguageMapUtils;
+import scala.Tuple2;
 
 import java.io.IOException;
 
 public class TwitterWithWindow {
+                    
     public static void main(String[] args) throws IOException, InterruptedException {
         String propertiesFile = args[0];
         String input = args[1];
@@ -35,14 +37,29 @@ public class TwitterWithWindow {
                 .buildLanguageMap(languageMapLines);
 
         // create an initial stream that counts language within the batch (as in the previous exercise)
-        final JavaPairDStream<String, Integer> languageCountStream = null; // IMPLEMENT ME
+        final JavaPairDStream<String, Integer> languageCountStream = stream
+                .mapToPair(s -> new Tuple2<>(s.getLang(), 1))
+                .transformToPair(rdd -> rdd.join(languageMap))
+                .mapToPair(s -> new Tuple2<>((s._2)._2, (s._2)._1))
+                .reduceByKey((a, b) -> a + b);
+                         
 
         // Prepare output within the batch
-        final JavaPairDStream<Integer, String> languageBatchByCount = null; // IMPLEMENT ME
-
+        final JavaPairDStream<Integer, String> languageBatchByCount = languageCountStream
+                .mapToPair(s -> s.swap())         
+                .transformToPair(s -> s.sortByKey(false));
+        
         // Prepare output within the window
-        final JavaPairDStream<Integer, String> languageWindowByCount = null; // IMPLEMENT ME
-
+        final JavaPairDStream<Integer, String> languageWindowByCount = stream
+                .window(Durations.seconds(5*60))
+                .mapToPair(s -> new Tuple2<>(s.getLang(), 1))
+                .transformToPair(rdd -> rdd.join(languageMap))
+                .mapToPair(s -> new Tuple2<>((s._2)._2, (s._2)._1))
+                .reduceByKey((a, b) -> a + b)
+                .mapToPair(s -> s.swap())
+                .transformToPair(s -> s.sortByKey(false));
+        
+        
         // Print first 15 results for each one
         languageBatchByCount.print();
         languageWindowByCount.print();
