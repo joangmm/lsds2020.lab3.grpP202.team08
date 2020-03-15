@@ -61,9 +61,9 @@ public class TwitterWithWindow {
         
         
         // Print first 15 results for each one
-        languageBatchByCount.print();
-        languageWindowByCount.print();
-
+        languageBatchByCount.print(15);
+        languageWindowByCount.print(15);
+                
         // Start the application and wait for termination signal
         jsc.start();
         jsc.awaitTermination();
