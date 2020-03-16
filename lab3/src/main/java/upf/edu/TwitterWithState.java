@@ -47,8 +47,8 @@ public class TwitterWithState {
                 
         // transform to a stream of <userTotal, userName> and get the first 20
         final JavaPairDStream<Integer, String> tweetsCountPerUser = tweetPerUser_updated
-                .transformToPair(s -> s.sortByKey(false))
-                .mapToPair(s -> s.swap());
+                .mapToPair(s -> s.swap())
+                .transformToPair(s -> s.sortByKey(false));
 
         tweetsCountPerUser.print(30);
 
