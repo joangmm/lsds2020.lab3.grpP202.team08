@@ -1,14 +1,11 @@
 package upf.edu;
 
 import upf.edu.storage.DynamoHashTagRepository;
-
 import org.apache.spark.SparkConf;
 import org.apache.spark.streaming.Durations;
 import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.apache.spark.streaming.twitter.TwitterUtils;
-import org.apache.spark.streaming.api.java.JavaDStream;
-import org.apache.spark.api.java.JavaRDD;
 
 import twitter4j.Status;
 import twitter4j.auth.OAuthAuthorization;
@@ -29,7 +26,7 @@ import com.amazonaws.services.dynamodbv2.document.PutItemOutcome;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.client.builder.AwsClientBuilder;
 
-public class TwitterHashtags{
+public class TwitterHashtagsReader{
     
     public static void main(String[] args) throws InterruptedException, IOException {
         String propertiesFile = args[0];
