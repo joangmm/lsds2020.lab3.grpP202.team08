@@ -5,15 +5,25 @@
 Time: 1584555480000 ms
 -------------------------------------------
 (Arabic,44)
+
 (Hindi,7)
+
 (Ukrainian,1)
+
 (Persian,8)
+
 (French,62)
+
 (Korean,19)
+
 (Italian,3)
+
 (Marathi,1)
+
 (Catalan; Valencian,2)
+
 (English,273)
+
 ...
 
 ## Ex 4: TwitterWithWindow
@@ -21,20 +31,35 @@ Time: 1584555480000 ms
 Time: 1584556780000 ms    <-- BATCH
 -------------------------------------------
 (362,English)
+
 (125,Spanish; Castilian)
+
 (89,Portuguese)
+
 (85,Arabic)
+
 (72,French)
+
 (44,Japanese)
+
 (32,Thai)
+
 (28,Turkish)
+
 (20,Korean)
+
 (11,Tagalog)
+
 (10,German)
+
 (10,Dutch; Flemish)
+
 (9,Russian)
+
 (8,Persian)
+
 (4,Greek, Modern (1453-))
+
 ...
 
 -------------------------------------------
