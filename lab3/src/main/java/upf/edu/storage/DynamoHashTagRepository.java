@@ -7,6 +7,8 @@ import org.apache.spark.api.java.JavaRDD;
 
 import java.io.Serializable;
 import java.util.*;
+import java.lang.*; 
+import java.io.*; 
 
 import java.util.Map;
 import java.util.HashMap;
@@ -18,7 +20,10 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
 import com.amazonaws.services.dynamodbv2.document.PutItemOutcome;
+import com.amazonaws.services.dynamodbv2.document.ItemCollection;
+import com.amazonaws.services.dynamodbv2.document.ScanOutcome;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.client.builder.AwsClientBuilder;
 
@@ -32,11 +37,10 @@ import com.amazonaws.services.dynamodbv2.model.ReturnValue;
 public class DynamoHashTagRepository implements IHashtagRepository, Serializable {
     final static String endpoint = "dynamodb.us-east-1.amazonaws.com";
     final static String region = "us-east-1";
-    final static String tableName = "LSDS2020-TwitterHashtags";
-   
+    final static String tableName = "LSDS2020-TwitterHashtags";   
 
-  @Override
-  public void write(Status tweet) {
+    @Override
+    public void write(Status tweet) {
         ProfileCredentialsProvider credentialsProvider = new ProfileCredentialsProvider();
         try {
             credentialsProvider.getCredentials();
@@ -99,14 +103,68 @@ public class DynamoHashTagRepository implements IHashtagRepository, Serializable
             }
         }
         
+    }   
+    
+
+
+    @Override
+    public List<HashTagCount> readTop10(String lang) {
+        List<HashTagCount> allTweets = new ArrayList<HashTagCount>();
+        
+        ProfileCredentialsProvider credentialsProvider = new ProfileCredentialsProvider();
+        try {
+            credentialsProvider.getCredentials();
+        } catch (Exception e) {
+            throw new AmazonClientException(
+                    "Cannot load the credentials from the credential profiles file. " +
+                    "Please make sure that your credentials file is at the correct " +
+                    "location (/home/rjr/.aws/credentials), and is in valid format.",
+                    e);
+        }
+        final AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endpoint, region)   )
+                .withCredentials(credentialsProvider)
+                .build();
+        final DynamoDB dynamoDB = new DynamoDB(client);
+        final Table dynamoDBTable = dynamoDB.getTable(tableName);
+
+
+        ScanSpec scanSpec = new ScanSpec().withProjectionExpression("#lan, hashtag, #count, List_Ids")
+            .withFilterExpression("#lan = :lang").withNameMap(new NameMap().with("#lan", "Language").with("#count", "Counter"))
+            .withValueMap(new ValueMap().withString(":lang", lang));
+
+        try {
+            ItemCollection<ScanOutcome> items = dynamoDBTable.scan(scanSpec);
+
+            Iterator<Item> iter = items.iterator();
+            while (iter.hasNext()) {
+                Item item = iter.next();
+                HashTagCount htc = new HashTagCount(item.get("hashtag").toString(), item.get("Language").toString(), Long.parseLong(item.get("Counter").toString()));
+                allTweets.add(htc);
+            }
+
+        }
+        catch (Exception e) {
+            System.err.println("Unable to scan the table:");
+            System.err.println(e.getMessage());
+        }
+
+      
+      
+        Collections.sort(allTweets, new CustomComparator());
+        List<HashTagCount> top10 = new ArrayList<HashTagCount>();
+        for(int i=0;i<10;i++)
+            top10.add(allTweets.get(i));
+        
+        return (top10);
     }
-  
-  
 
-  @Override
-  public List<HashTagCount> readTop10(String lang) {
-    // IMPLEMENT ME
-    return Collections.emptyList();
-  }
+}
 
+
+class CustomComparator implements Comparator<HashTagCount>{
+    @Override
+    public int compare(HashTagCount o1, HashTagCount o2) {
+        return (int)(o2.getCount() - o1.getCount());
+    }
 }
