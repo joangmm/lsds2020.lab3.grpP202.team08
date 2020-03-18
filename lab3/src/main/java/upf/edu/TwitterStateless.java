@@ -23,7 +23,7 @@ public class TwitterStateless {
         OAuthAuthorization auth = ConfigUtils.getAuthorizationFromFileProperties(propertiesFile);
 
         SparkConf conf = new SparkConf().setAppName("Real-time Twitter Stateless Exercise");
-        JavaStreamingContext jsc = new JavaStreamingContext(conf, Durations.seconds(20));
+        JavaStreamingContext jsc = new JavaStreamingContext(conf, Durations.seconds(30));
         jsc.checkpoint("/tmp/checkpoint");
 
         final JavaReceiverInputDStream<Status> stream = TwitterUtils.createStream(jsc, auth);

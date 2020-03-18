@@ -50,7 +50,7 @@ public class TwitterWithState {
                 .mapToPair(s -> s.swap())
                 .transformToPair(s -> s.sortByKey(false));
 
-        tweetsCountPerUser.print(30);
+        tweetsCountPerUser.print(20);
 
         // Start the application and wait for termination signal
         jsc.start();
