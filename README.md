@@ -66,20 +66,35 @@ Time: 1584556780000 ms    <-- BATCH
 Time: 1584556780000 ms     <-- WINDOW
 -------------------------------------------
 (730,English)
+
 (232,Spanish; Castilian)
+
 (178,Portuguese)
+
 (155,Arabic)
+
 (132,French)
+
 (85,Japanese)
+
 (70,Thai)
+
 (67,Turkish)
+
 (42,Korean)
+
 (24,German)
+
 (22,Persian)
+
 (16,Russian)
+
 (14,Tagalog)
+
 (14,Dutch; Flemish)
+
 (11,Italian)
+
 ...
 
 
@@ -91,36 +106,66 @@ Time: 1584556780000 ms     <-- WINDOW
 Time: 1584555960000 ms
 -------------------------------------------
 (5,gorosito_ludmi)
+
 (3,lovingmati)
+
 (2,lucianaaa_b)
+
 (2,SrtoVictoor)
+
 (2,FekyX_eSports)
+
 (2,danicabreraa3)
+
 (1,hpumafc)
+
 (1,juulietaubeda)
+
 (1,elshaarawycrf)
+
 (1,crespo_yraida1)
+
 (1,Roberto79825543)
+
 (1,Gilbert30766865)
+
 (1,K1auss0)
+
 (1,MateoDj4)
+
 (1,fiftyn)
+
 (1,DaironB98)
+
 (1,Roquesince)
+
 (1,violettlopez7)
+
 (1,AttanasioAgus)
+
 (1,FFMazapan)
+
 ...
 
 ## Ex 6.2: TwitterHashtagsReader
 
 {"hashTag":"#COVID19","lang":"en","count":13}
+
 {"hashTag":"#coronavirus","lang":"en","count":11}
+
 {"hashTag":"#UNStopMentalModi","lang":"en","count":3}
+
 {"hashTag":"#BestMusicVideo","lang":"en","count":2}
+
 {"hashTag":"#EastEnders","lang":"en","count":2}
+
 {"hashTag":"#KillThisLove","lang":"en","count":2}
+
 {"hashTag":"#AsiM…","lang":"en","count":2}
+
 {"hashTag":"#coronavirusindia","lang":"en","count":2}
+
 {"hashTag":"#CoronavirusOutbreak","lang":"en","count":2}
+
 {"hashTag":"#CoronaVirusChallenge","lang":"en","count":2}
+
